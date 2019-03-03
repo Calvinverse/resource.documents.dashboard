@@ -228,7 +228,7 @@ file '/etc/consul/conf.d/kibana-http.json' do
         {
           "checks": [
             {
-              "http": "http://localhost:#{http_port}/#{proxy_path}/status",
+              "http": "http://127.0.0.1:#{http_port}/api/status",
               "id": "kibana_http_health_check",
               "interval": "30s",
               "method": "GET",
@@ -242,7 +242,7 @@ file '/etc/consul/conf.d/kibana-http.json' do
           "port": #{http_port},
           "tags": [
             "#{consul_service_tag}",
-            "edgeproxyprefix-/#{proxy_path} host=dst"
+            "edgeproxyprefix-/#{proxy_path} strip=/#{proxy_path}"
           ]
         }
       ]

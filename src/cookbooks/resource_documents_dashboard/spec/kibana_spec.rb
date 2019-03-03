@@ -156,7 +156,7 @@ describe 'resource_documents_dashboard::kibana' do
           {
             "checks": [
               {
-                "http": "http://localhost:5601/dashboards/documents/status",
+                "http": "http://127.0.0.1:5601/api/status",
                 "id": "kibana_http_health_check",
                 "interval": "30s",
                 "method": "GET",
@@ -170,7 +170,7 @@ describe 'resource_documents_dashboard::kibana' do
             "port": 5601,
             "tags": [
               "documents",
-              "edgeproxyprefix-/dashboards/documents host=dst"
+              "edgeproxyprefix-/dashboards/documents strip=/dashboards/documents"
             ]
           }
         ]
