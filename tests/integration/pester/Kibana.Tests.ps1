@@ -8,15 +8,11 @@ Describe 'The kibana application' {
 
         It 'with default configuration in /etc/kibana' {
             '/etc/kibana/kibana.yml' | Should Exist
-            '/etc/kibana/jvm.options' | Should Exist
-            '/etc/kibana/log4j2.properties' | Should Exist
-            '/etc/kibana/role_mapping.yml' | Should Exist
-            '/etc/kibana/roles.yml' | Should Exist
         }
     }
 
     Context 'has been daemonized' {
-        $serviceConfigurationPath = '/usr/lib/systemd/system/kibana.service'
+        $serviceConfigurationPath = '/etc/systemd/system/kibana.service'
         if (-not (Test-Path $serviceConfigurationPath)) {
             It 'has a systemd configuration' {
                 $false | Should Be $true
@@ -25,66 +21,25 @@ Describe 'The kibana application' {
 
         $expectedContent = @'
 [Unit]
-Description=Elasticsearch
-Documentation=http://www.elastic.co
-Wants=network-online.target
-After=network-online.target
+Description=Kibana
+StartLimitIntervalSec=30
+StartLimitBurst=3
 
 [Service]
-RuntimeDirectory=elasticsearch
-PrivateTmp=true
-Environment=ES_HOME=/usr/share/elasticsearch
-Environment=ES_PATH_CONF=/etc/elasticsearch
-Environment=PID_DIR=/var/run/elasticsearch
-EnvironmentFile=-/etc/default/elasticsearch
-
-WorkingDirectory=/usr/share/elasticsearch
-
-User=elasticsearch
-Group=elasticsearch
-
-ExecStart=/usr/share/elasticsearch/bin/elasticsearch -p ${PID_DIR}/elasticsearch.pid --quiet
-
-# StandardOutput is configured to redirect to journalctl since
-# some error messages may be logged in standard output before
-# elasticsearch logging system is initialized. Elasticsearch
-# stores its logs in /var/log/elasticsearch and does not use
-# journalctl by default. If you also want to enable journalctl
-# logging, you can simply remove the "quiet" option from ExecStart.
-StandardOutput=journal
-StandardError=inherit
-
-# Specifies the maximum file descriptor number that can be opened by this process
-LimitNOFILE=65536
-
-# Specifies the maximum number of processes
-LimitNPROC=4096
-
-# Specifies the maximum size of virtual memory
-LimitAS=infinity
-
-# Specifies the maximum file size
-LimitFSIZE=infinity
-
-# Disable timeout logic and wait until process is stopped
-TimeoutStopSec=0
-
-# SIGTERM signal is used to stop the Java process
-KillSignal=SIGTERM
-
-# Send the signal only to the JVM rather than its control group
-KillMode=process
-
-# Java process is never killed
-SendSIGKILL=no
-
-# When a JVM receives a SIGTERM signal it exits with code 143
-SuccessExitStatus=143
+Type=simple
+User=kibana
+Group=kibana
+# Load env vars from /etc/default/ and /etc/sysconfig/ if they exist.
+# Prefixing the path with '-' makes it try to load, but if the file doesn't
+# exist, it continues onward.
+EnvironmentFile=-/etc/default/kibana
+EnvironmentFile=-/etc/sysconfig/kibana
+ExecStart=/usr/share/kibana/bin/kibana "-c /etc/kibana/kibana.yml"
+Restart=always
+WorkingDirectory=/
 
 [Install]
 WantedBy=multi-user.target
-
-# Built for packages-6.6.1 (packages)
 
 '@
         $serviceFileContent = Get-Content $serviceConfigurationPath | Out-String
@@ -110,7 +65,7 @@ WantedBy=multi-user.target
 
     Context 'can be contacted' {
         try {
-            $response = Invoke-WebRequest -Uri "http://localhost:5601/dashboards/documents/status" -Headers $headers -UseBasicParsing
+            $response = Invoke-WebRequest -Uri "http://127.0.0.1:5601/api/status" -Headers $headers -UseBasicParsing
         }
         catch {
             # Because powershell sucks it throws if the response code isn't a 200 one ...
