@@ -73,65 +73,6 @@ end
 #
 
 kibana_config_path = node['kibana']['path']['settings']
-
-# Disable DNS caching in the JVM. We have unbound for this. See:
-# - https://docs.oracle.com/javase/8/docs/technotes/guides/net/properties.html
-# - https://github.com/elastic/elasticsearch/issues/16412
-jvm_security_override = "#{kibana_config_path}/java.security"
-file jvm_security_override do
-  action :create
-  content <<~PROPERTIES
-    networkaddress.cache.ttl=0
-    networkaddress.cache.negative.ttl=0
-  PROPERTIES
-  group node['kibana']['service_group']
-  mode '0550'
-  owner node['kibana']['service_user']
-end
-
-file "#{kibana_config_path}/jvm.options" do
-  action :create
-  content <<~CONF
-    -XX:+UseConcMarkSweepGC
-    -XX:CMSInitiatingOccupancyFraction=75
-    -XX:+UseCMSInitiatingOccupancyOnly
-    -XX:+AlwaysPreTouch
-    -server
-    -Xss1m
-    -Djava.awt.headless=true
-    -Dfile.encoding=UTF-8
-    -Djna.nosys=true
-    -XX:-OmitStackTraceInFastThrow
-    -Dio.netty.noUnsafe=true
-    -Dio.netty.noKeySetOptimization=true
-    -Dio.netty.recycler.maxCapacityPerThread=0
-    -Dlog4j.shutdownHookEnabled=false
-    -Dlog4j2.disable.jmx=true
-    -XX:+HeapDumpOnOutOfMemoryError
-    -Djava.security.properties=#{jvm_security_override}
-  CONF
-  group node['kibana']['service_group']
-  mode '0550'
-  owner node['kibana']['service_user']
-end
-
-#
-# ALLOW KIBANA THROUGH THE FIREWALL
-#
-
-http_port = node['kibana']['port']['http']
-firewall_rule 'kibana-http' do
-  command :allow
-  description 'Allow kibana HTTP traffic'
-  dest_port http_port
-  direction :in
-end
-
-#
-# KIBANA CONFIG
-#
-
-kibana_config_path = node['kibana']['path']['settings']
 http_port = node['kibana']['port']['http']
 elasticsearch_http_port = node['elasticsearch']['port']['http']
 

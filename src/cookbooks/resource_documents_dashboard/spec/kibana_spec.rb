@@ -10,41 +10,8 @@ describe 'resource_documents_dashboard::kibana' do
       expect(chef_run).to install_apt_package('kibana')
     end
 
-    it 'disables the kibana service' do
-      expect(chef_run).to disable_service('kibana')
-    end
-
-    kibana_security_override_content = <<~PROPERTIES
-      networkaddress.cache.ttl=0
-      networkaddress.cache.negative.ttl=0
-    PROPERTIES
-    it 'creates the /etc/kibana/java.security' do
-      expect(chef_run).to create_file('/etc/kibana/java.security')
-        .with_content(kibana_security_override_content)
-    end
-
-    kibana_jvm_options_content = <<~PROPERTIES
-      -XX:+UseConcMarkSweepGC
-      -XX:CMSInitiatingOccupancyFraction=75
-      -XX:+UseCMSInitiatingOccupancyOnly
-      -XX:+AlwaysPreTouch
-      -server
-      -Xss1m
-      -Djava.awt.headless=true
-      -Dfile.encoding=UTF-8
-      -Djna.nosys=true
-      -XX:-OmitStackTraceInFastThrow
-      -Dio.netty.noUnsafe=true
-      -Dio.netty.noKeySetOptimization=true
-      -Dio.netty.recycler.maxCapacityPerThread=0
-      -Dlog4j.shutdownHookEnabled=false
-      -Dlog4j2.disable.jmx=true
-      -XX:+HeapDumpOnOutOfMemoryError
-      -Djava.security.properties=/etc/kibana/java.security
-    PROPERTIES
-    it 'creates the /etc/kibana/jvm.options' do
-      expect(chef_run).to create_file('/etc/kibana/jvm.options')
-        .with_content(kibana_jvm_options_content)
+    it 'enables the kibana service' do
+      expect(chef_run).to enable_service('kibana')
     end
 
     kibana_config_content = <<~CONF
@@ -140,7 +107,7 @@ describe 'resource_documents_dashboard::kibana' do
       #elasticsearch.logQueries: false
 
       # Specifies the path where Kibana creates the process ID file.
-      pid.file: /var/run/kibana/kibana.pid
+      pid.file: /run/kibana/kibana.pid
 
       # Enables you specify a file where Kibana stores log output.
       logging.dest: stdout
