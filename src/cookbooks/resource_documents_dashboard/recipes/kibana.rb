@@ -47,13 +47,6 @@ directory node['kibana']['path']['plugins'] do
   owner node['kibana']['service_user']
 end
 
-directory node['kibana']['path']['pid'] do
-  action :create
-  group node['kibana']['service_group']
-  mode '0770'
-  owner node['kibana']['service_user']
-end
-
 #
 # INSTALL KIBANA
 #
@@ -72,13 +65,19 @@ end
 # CONFIGURATION
 #
 
+pid_file = "#{node['kibana']['path']['pid']}/kibana.pid"
+file pid_file do
+  action :create
+  group node['kibana']['service_group']
+  mode '0770'
+  owner node['kibana']['service_user']
+end
+
 kibana_config_path = node['kibana']['path']['settings']
 http_port = node['kibana']['port']['http']
 elasticsearch_http_port = node['elasticsearch']['port']['http']
 
 proxy_path = node['kibana']['proxy']['path']
-
-pid_file = "#{node['kibana']['path']['pid']}/kibana.pid"
 
 file "#{kibana_config_path}/kibana.yml" do
   action :create
