@@ -50,12 +50,14 @@ Describe 'The firewall' {
     }
 
     Context 'should allow elasticsearch' {
-        It 'on port 9200'{
-            ($ufwOutput | Where-Object {$_ -match '(9200/tcp)\s*(ALLOW)\s*(Anywhere)'} ) | Should Not Be $null
-        }
-
         It 'on port 9300'{
             ($ufwOutput | Where-Object {$_ -match '(9300/tcp)\s*(ALLOW)\s*(Anywhere)'} ) | Should Not Be $null
+        }
+    }
+
+    Context 'should allow kibana' {
+        It 'on port 5601'{
+            ($ufwOutput | Where-Object {$_ -match '(5601/tcp)\s*(ALLOW)\s*(Anywhere)'} ) | Should Not Be $null
         }
     }
 

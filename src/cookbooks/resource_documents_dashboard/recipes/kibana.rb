@@ -262,6 +262,17 @@ file "#{kibana_config_path}/kibana.yml" do
 end
 
 #
+# ALLOW KIBANA THROUGH THE FIREWALL
+#
+
+firewall_rule 'kibana-http' do
+  command :allow
+  description 'Allow kibana HTTP traffic'
+  dest_port http_port
+  direction :in
+end
+
+#
 # CONSUL FILES
 #
 
