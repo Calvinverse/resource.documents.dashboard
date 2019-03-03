@@ -18,7 +18,7 @@ describe 'resource_documents_dashboard::kibana_templates' do
       servers = ["http://localhost:5601"]
 
       ## Timeout for HTTP requests to the kibana server(s)
-      http_timeout = "5s"
+      timeout = "5s"
 
       ## HTTP Basic Auth credentials
       # username = "username"

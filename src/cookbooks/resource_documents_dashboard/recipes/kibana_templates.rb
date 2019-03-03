@@ -37,7 +37,7 @@ file "#{consul_template_template_path}/#{telegraf_kibana_inputs_template_file}" 
     servers = ["http://localhost:#{http_port}"]
 
     ## Timeout for HTTP requests to the kibana server(s)
-    http_timeout = "5s"
+    timeout = "5s"
 
     ## HTTP Basic Auth credentials
     # username = "username"
