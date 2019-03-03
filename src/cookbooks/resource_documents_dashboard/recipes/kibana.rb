@@ -95,7 +95,7 @@ file "#{kibana_config_path}/kibana.yml" do
     # Use the `server.rewriteBasePath` setting to tell Kibana if it should remove the basePath
     # from requests it receives, and to prevent a deprecation warning at startup.
     # This setting cannot end in a slash.
-    server.basePath: "#{proxy_path}"
+    server.basePath: "/#{proxy_path}"
 
     # Specifies whether Kibana should rewrite requests that are prefixed with
     # `server.basePath` or require that they are rewritten by your reverse proxy.
