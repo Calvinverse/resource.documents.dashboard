@@ -58,7 +58,7 @@ end
 
 kibana_service_name = node['kibana']['service_name']
 service kibana_service_name do
-  action :disable
+  action :enable
 end
 
 #

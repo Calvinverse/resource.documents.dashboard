@@ -29,7 +29,6 @@ include_recipe 'resource_documents_dashboard::elasticsearch_service'
 include_recipe 'resource_documents_dashboard::elasticsearch_templates'
 
 include_recipe 'resource_documents_dashboard::kibana'
-include_recipe 'resource_documents_dashboard::kibana_service'
 include_recipe 'resource_documents_dashboard::kibana_templates'
 
 include_recipe 'resource_documents_dashboard::provisioning'
