@@ -56,7 +56,7 @@ settings_directory = '/etc/kibana'
 default['kibana']['path']['home'] = home_directory
 default['kibana']['path']['bin'] = "#{home_directory}/bin"
 default['kibana']['path']['settings'] = settings_directory
-default['kibana']['path']['pid'] = '/var/run/kibana'
+default['kibana']['path']['pid'] = '/run/kibana'
 default['kibana']['path']['plugins'] = "#{home_directory}/plugins"
 default['kibana']['path']['data'] = '/var/lib/kibana'
 

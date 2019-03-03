@@ -47,6 +47,13 @@ directory node['kibana']['path']['plugins'] do
   owner node['kibana']['service_user']
 end
 
+directory node['kibana']['path']['pid'] do
+  action :create
+  group node['kibana']['service_group']
+  mode '0770'
+  owner node['kibana']['service_user']
+end
+
 #
 # INSTALL KIBANA
 #
