@@ -14,10 +14,6 @@ describe 'resource_documents_dashboard::kibana' do
       expect(chef_run).to enable_service('kibana')
     end
 
-    it 'creates the PID file' do
-      expect(chef_run).to create_file('/run/kibana.pid')
-    end
-
     kibana_config_content = <<~CONF
       # Kibana is served by a back end server. This setting specifies the port to use.
       server.port: 5601
@@ -111,7 +107,7 @@ describe 'resource_documents_dashboard::kibana' do
       #elasticsearch.logQueries: false
 
       # Specifies the path where Kibana creates the process ID file.
-      pid.file: /run/kibana.pid
+      pid.file: /tmp/kibana.pid
 
       # Enables you specify a file where Kibana stores log output.
       logging.dest: stdout

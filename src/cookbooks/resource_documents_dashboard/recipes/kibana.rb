@@ -66,13 +66,6 @@ end
 #
 
 pid_file = "#{node['kibana']['path']['pid']}/kibana.pid"
-file pid_file do
-  action :create
-  group node['kibana']['service_group']
-  mode '0770'
-  owner node['kibana']['service_user']
-end
-
 kibana_config_path = node['kibana']['path']['settings']
 http_port = node['kibana']['port']['http']
 elasticsearch_http_port = node['elasticsearch']['port']['http']
