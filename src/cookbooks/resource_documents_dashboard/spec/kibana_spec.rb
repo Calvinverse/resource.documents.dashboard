@@ -10,8 +10,8 @@ describe 'resource_documents_dashboard::kibana' do
       expect(chef_run).to install_apt_package('kibana')
     end
 
-    it 'enables the kibana service' do
-      expect(chef_run).to enable_service('kibana')
+    it 'disables the kibana service' do
+      expect(chef_run).to disable_service('kibana')
     end
 
     kibana_config_content = <<~CONF
