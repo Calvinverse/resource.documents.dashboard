@@ -2,7 +2,7 @@
 
 This repository contains the scripts and tools to create a VM image with an installation of Kibana
 
-This repository contains the source code for the Resource-Documents.Storage image which contains an
+This repository contains the source code for the resource-documents.storage image which contains an
 instance of the [Kibana](https://www.elastic.co/products/kibana) UI.
 
 ## Image
