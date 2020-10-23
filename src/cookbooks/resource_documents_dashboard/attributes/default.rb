@@ -11,7 +11,7 @@ default['consul_template']['template_path'] = '/etc/consul-template.d/templates'
 # ELASTICSEARCH
 #
 
-default['elasticsearch']['version'] = '6.6.1'
+default['elasticsearch']['version'] = '7.9.0'
 default['elasticsearch']['service_name'] = 'elasticsearch'
 default['elasticsearch']['service_user'] = 'elasticsearch'
 default['elasticsearch']['service_group'] = 'elasticsearch'
@@ -70,7 +70,7 @@ default['kibana']['service_name'] = 'kibana'
 default['kibana']['service_user'] = 'kibana'
 default['kibana']['service_group'] = 'kibana'
 
-default['kibana']['version'] = '6.6.1'
+default['kibana']['version'] = '7.9.0'
 
 default['kibana']['telegraf']['consul_template_inputs_file'] = 'telegraf_kibana_inputs.ctmpl'
 
