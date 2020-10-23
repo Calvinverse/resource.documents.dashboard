@@ -165,7 +165,6 @@ the environment in which the Kibana instance will be created.
 * Download the new image to one of your Hyper-V hosts.
 * Create a directory for the image and copy the image VHDX file there.
 * Create a VM that points to the image VHDX file with the following settings
-  * Name: `<Environment>_<ResourceName>-<Number>`
   * Generation: 2
   * RAM: 2048 Mb. Do *not* use dynamic memory
   * Network: VM
